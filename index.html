@@ -956,7 +956,20 @@
         function renderSchoolDropdown() {
             schoolsOptionsContainer.innerHTML = '';
             
-            
+            // 1. Добавляем опцию "Написать свою школу" в самый верх
+            const customDiv = document.createElement('div');
+            customDiv.className = 'custom-option';
+            customDiv.dataset.type = 'custom'; // Спец. метка для фильтра
+            customDiv.innerHTML = `<strong>${translations[currentLang].schoolCustom}</strong>`;
+            customDiv.addEventListener('click', () => {
+                schoolSelectedText.textContent = translations[currentLang].schoolCustom;
+                schoolSelectedText.style.color = '#333';
+                hiddenSchoolInput.value = 'custom';
+                isCustomSchoolSelected = true;
+                customSchoolGroup.style.display = 'block';
+                schoolSelect.classList.remove('open');
+            });
+            schoolsOptionsContainer.appendChild(customDiv);
 
             // 2. Добавляем остальные школы из списка
             schoolsData[currentLang].forEach((schoolName) => {
@@ -982,7 +995,7 @@
             customSchoolInput.value = '';
             schoolSelectedText.textContent = translations[currentLang].schoolPlaceholder;
             schoolSelectedText.style.color = '#666';
-            schoolSearchInput.placeholder = (lang === 'kk' ? "Іздеу..." : "Поиск...");
+            schoolSearchInput.placeholder = translations[currentLang].searchPlaceholder;
         }
 
 
