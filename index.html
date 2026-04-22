@@ -954,24 +954,17 @@
         }
 
         function renderSchoolDropdown() {
-            schoolsOptionsContainer.innerHTML = '';
-            
-            // 1. Добавляем опцию "Написать свою школу" в самый верх
-            const customDiv = document.createElement('div');
-            customDiv.className = 'custom-option';
-            customDiv.dataset.type = 'custom'; // Спец. метка для фильтра
-            customDiv.innerHTML = `<strong>${translations[currentLang].schoolCustom}</strong>`;
-            customDiv.addEventListener('click', () => {
-                schoolSelectedText.textContent = translations[currentLang].schoolCustom;
-                schoolSelectedText.style.color = '#333';
-                hiddenSchoolInput.value = 'custom';
-                isCustomSchoolSelected = true;
-                customSchoolGroup.style.display = 'block';
-                schoolSelect.classList.remove('open');
-            });
-            schoolsOptionsContainer.appendChild(customDiv);
+            const schoolsOptionsContainer = document.getElementById('schoolsOptionsContainer');
+            const schoolSelectedText = document.getElementById('schoolSelectedText');
+            const schoolSearchInput = document.getElementById('schoolSearchInput');
+            const hiddenSchoolInput = document.getElementById('school');
+            const customSchoolGroup = document.getElementById('customSchoolGroup');
+            const customSchoolInput = document.getElementById('customSchool');
 
-            // 2. Добавляем остальные школы из списка
+            // Тізімді тазалау
+            schoolsOptionsContainer.innerHTML = '';
+
+            // Тек қана тізімдегі облыстарды шығару (undefined болмайды)
             schoolsData[currentLang].forEach((schoolName) => {
                 const div = document.createElement('div');
                 div.className = 'custom-option';
@@ -980,22 +973,29 @@
                     schoolSelectedText.textContent = schoolName;
                     schoolSelectedText.style.color = '#333';
                     hiddenSchoolInput.value = schoolName;
-                    isCustomSchoolSelected = false;
+                    
+                    // "Басқа" өрісін жасыру
                     customSchoolGroup.style.display = 'none';
-                    customSchoolInput.value = ''; // очищаем поле, если оно было заполнено
-                    schoolSelect.classList.remove('open');
+                    customSchoolInput.value = ''; 
+                    
+                    // Тізімді жабу
+                    document.getElementById('schoolSelect').classList.remove('open');
                 });
                 schoolsOptionsContainer.appendChild(div);
             });
 
-            // Сброс при смене языка
+            // Іздеу жолағы мен бастапқы мәтінді түзету
+            schoolSelectedText.textContent = translations[currentLang].schoolPlaceholder || "Тізімнен таңдаңыз...";
+            schoolSelectedText.style.color = '#666';
+            
+            if (schoolSearchInput) {
+                schoolSearchInput.placeholder = (currentLang === 'kk' ? "Іздеу..." : "Поиск...");
+            }
+
+            // Мәндерді бастапқы күйге келтіру
             hiddenSchoolInput.value = '';
-            isCustomSchoolSelected = false;
             customSchoolGroup.style.display = 'none';
             customSchoolInput.value = '';
-            schoolSelectedText.textContent = translations[currentLang].schoolPlaceholder;
-            schoolSelectedText.style.color = '#666';
-            schoolSearchInput.placeholder = translations[currentLang].searchPlaceholder;
         }
 
 
