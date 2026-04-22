@@ -20,7 +20,7 @@
             overflow: hidden;
         }
 
-        /* --- ПРИВЕТСТВЕННЫЙ ЭКРАН (Оверлей) --- */
+    
         .language-overlay {
             position: fixed;
             top: 0;
@@ -94,7 +94,7 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
         }
 
-        /* Языковой переключатель */
+       
         .lang-switcher {
             position: absolute;
             top: 20px;
@@ -261,7 +261,7 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        /* --- СТИЛИ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА С ПОИСКОМ (ШКОЛА) --- */
+        
         .custom-select-wrapper {
             position: relative;
             user-select: none;
@@ -361,7 +361,7 @@
             display: none;
         }
 
-        /* ----------------------------------------------------- */
+        
 
         .submit-btn {
             width: 100%;
@@ -646,7 +646,7 @@
                     <input type="hidden" id="school">
                 </div>
 
-                <!-- НОВОЕ: Поле для ввода своей школы (скрыто по умолчанию) -->
+                
                 <div class="form-group" id="customSchoolGroup" style="display: none;">
                     <label data-i18n="labelCustomSchool">Өз мектебіңізді жазыңыз:</label>
                     <input type="text" id="customSchool" data-i18n-placeholder="customSchoolPlaceholder" placeholder="Мектеп атауын енгізіңіз">
@@ -896,9 +896,7 @@
             }
         });
 
-        // ========================================
-        // ЛОГИКА КАСТОМНОГО ВЫПАДАЮЩЕГО СПИСКА ШКОЛ
-        // ========================================
+        
         const schoolSelect = document.getElementById('schoolSelect');
         const schoolTrigger = document.getElementById('schoolTrigger');
         const schoolSelectedText = document.getElementById('schoolSelectedText');
@@ -934,7 +932,7 @@
             let hasVisible = false;
 
             options.forEach(opt => {
-                // Всегда оставлять видимым пункт "Другое (написать свою)"
+                
                 if (opt.dataset.type === 'custom') {
                     opt.classList.remove('hidden');
                     hasVisible = true;
@@ -1008,7 +1006,7 @@
             });
         });
 
-        // Отправка формы
+        
         document.getElementById('regForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1032,7 +1030,7 @@
                 return;
             }
 
-            // Если выбрана "Своя школа", берем значение из текстового поля
+            
             if (isCustomSchoolSelected) {
                 finalSchool = customSchoolInput.value.trim();
                 if (!finalSchool) {
@@ -1072,14 +1070,14 @@
                         action: 'addRegistration',
                         name: name,
                         role: roleToSave, 
-                        school: finalSchool, // отправляем финальное название школы
+                        school: finalSchool, 
                         timestamp: new Date().toLocaleString('ru-RU')
                     })
                 });
 
                 document.getElementById('successMessage').classList.add('show');
                 
-                // Очистка формы после успеха
+                
                 document.getElementById('name').value = '';
                 hiddenSchoolInput.value = '';
                 schoolSelectedText.textContent = translations[currentLang].schoolPlaceholder;
@@ -1089,7 +1087,7 @@
                 customRoleInput.value = '';
                 customRoleGroup.style.display = 'none';
                 
-                // Сброс кастомной школы
+                
                 isCustomSchoolSelected = false;
                 customSchoolGroup.style.display = 'none';
                 customSchoolInput.value = '';
@@ -1107,7 +1105,7 @@
             submitBtn.textContent = translations[currentLang].submitBtn;
         });
 
-        // Умный поиск для фильтра
+        
         function normalizeRole(roleString) {
             if (!roleString) return 'other';
             const s = roleString.toLowerCase();
@@ -1233,5 +1231,20 @@
         startAutoRefresh();
         setLanguage('kk'); 
     </script>
+
+    <script>
+    // Тінтуірдің оң жақ батырмасын өшіру
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Пернетақтадағы арнайы батырмаларды өшіру
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123) return false; // F12
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+    };
+</script>
+    
 </body>
 </html>
