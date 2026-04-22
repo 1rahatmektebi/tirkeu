@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ТІРКЕУ</title>
     <style>
+
+/* Мәтінді белгілеуді бұғаттау */
+body {
+    -webkit-user-select: none;  /* Safari */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Standard */
+}
+        
         * {
             margin: 0;
             padding: 0;
@@ -615,7 +624,7 @@
                     <select id="roleSelect" class="role-select">
                         <option value="" data-i18n="selectRole" selected>Лауазымды таңдаңыз</option>
                         <option value="director" data-i18n="roleDirector">👔 Директор</option>
-                        <option value="zavuch_vr" data-i18n="roleZavuchVR">📋 Директордың тәрбие ісі жөніндегі орынбасары</option>
+                        <option value="zavuch_vr" data-i18n="roleZavuchVR">📋 Директордың орынбасары</option>
                         <option value="parent" data-i18n="roleParent">👨‍👩‍👦 Ата-ана</option>
                         <option value="custom" data-i18n="roleCustom">✏️ Басқа (өзін жазу)</option>
                     </select>
@@ -756,7 +765,7 @@
                 roleLabel: "Лауазымыңыз:",
                 selectRole: "Лауазымды таңдаңыз",
                 roleDirector: "👔 Директор",
-                roleZavuchVR: "📋 Директордың тәрбие ісі жөніндегі орынбасары",
+                roleZavuchVR: "📋 Директордың орынбасары",
                 roleParent: "📋 Мұғалім",
                 roleCustom: "✏️ Басқа (өзін жазу)",
                 labelCustomRole: "Өз лауазымыңызды жазыңыз:",
@@ -774,7 +783,7 @@
                 total: "Барлығы",
                 filterAll: "Барлығы",
                 filterDirector: "👔 Директорлар",
-                filterZavuchVR: "📋 Тәрбие ісі жөніндегі орынбасарлар",
+                filterZavuchVR: "📋 Директордың рынбасарлары",
                 filterParent: "📋 Мұғалімдер",
                 filterOther: "✏️ Басқалар",
                 loading: "Қатысушылар жүктелуде...",
@@ -797,7 +806,7 @@
                 roleLabel: "Ваша должность:",
                 selectRole: "Выберите должность",
                 roleDirector: "👔 Директор",
-                roleZavuchVR: "📋 Заместитель директора по ВР",
+                roleZavuchVR: "📋 Заместитель директора",
                 roleParent: "📋 Учитель",
                 roleCustom: "✏️ Другое (написать свою)",
                 labelCustomRole: "Напишите свою должность:",
@@ -815,7 +824,7 @@
                 total: "Всего",
                 filterAll: "Все",
                 filterDirector: "👔 Директора",
-                filterZavuchVR: "📋 Зам. директора по ВР",
+                filterZavuchVR: "📋 Заместители директора",
                 filterParent: "📋 Учителя",
                 filterOther: "✏️ Другие",
                 loading: "Загрузка участников...",
@@ -1110,7 +1119,7 @@
             if (!roleString) return 'other';
             const s = roleString.toLowerCase();
             
-            // Сначала проверяем на завучей, чтобы "Заместитель директора" не воспринялся как "Директор"
+            
             if (s.includes('тәрбие') || s.includes('заместитель') || s.includes('зам') || s.includes('орынбасар')) return 'zavuch_vr';
             // Затем проверяем на директоров
             if (s.includes('директор') || s.includes('director')) return 'director';
