@@ -1196,6 +1196,24 @@ body {
                     if (nRole === 'parent') roleIcon = '👨‍👩‍👦';
                     if (nRole === 'other') roleIcon = '✏️';
 
+            // --- УАҚЫТТЫ ТҮЗЕТУ БЛОГЫ (ОСЫ ЖЕРДІ ҚОСЫҢЫЗ) ---
+        let timestamp = "";
+        try {
+            const dateObj = new Date(rawTimestamp);
+            if (!isNaN(dateObj)) {
+                // 5 сағат қосу (GMT+5)
+                const kzDate = new Date(dateObj.getTime() + (5 * 60 * 60 * 1000));
+                const hours = String(kzDate.getHours()).padStart(2, '0');
+                const minutes = String(kzDate.getMinutes()).padStart(2, '0');
+                timestamp = `${hours}:${minutes}`;
+            } else {
+                timestamp = "—";
+            }
+        } catch (e) {
+            timestamp = "—";
+        }
+        // ----------------------------------------------
+                    
                     return `
                         <div class="participant-item ${isNew ? 'new' : ''}" data-participant-id="${participantId}">
                             <div class="participant-avatar">${roleIcon}</div>
