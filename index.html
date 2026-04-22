@@ -1153,62 +1153,37 @@ body {
 
         function renderParticipants() {
             const listContainer = document.getElementById('participantsList');
+            if (!listContainer) return;
             
-            let filtered = participantsData;
-            if (currentFilter !== 'all') {
-                filtered = participantsData.filter(r => normalizeRole(r[1]) === currentFilter);
-            }
-
-            if (filtered.length === 0) {
-                listContainer.innerHTML = `<div class="empty-state"><div class="empty-state-icon">👥</div><p>${translations[currentLang].empty}</p></div>`;
-                return;
-            }
-
-            listContainer.innerHTML = filtered
+            listContainer.innerHTML = filteredParticipants
+                .slice()
                 .reverse()
-                .map((reg, index) => {
-                    let name = reg[0];
-                    let role = reg[1];
-                    let school = reg[2] || '—';
-                    let timestamp = reg[3] || reg[2];
+                .map((reg) => {
+                    const name = reg[0];
+                    const role = reg[1];
+                    const school = reg[2] || '—';
+                    const rawTimestamp = reg[3] || reg[2];
 
-                    
+                    // УАҚЫТТЫ ОСЫ ЖЕРДЕ ТҮЗЕТЕМІЗ:
+                    let timestamp = "";
+                    try {
+                        const dateObj = new Date(rawTimestamp);
+                        if (!isNaN(dateObj)) {
+                            // UTC-ден GMT+5-ке көшіру (5 сағат қосу)
+                            const kzDate = new Date(dateObj.getTime() + (5 * 60 * 60 * 1000));
+                            const hours = String(kzDate.getHours()).padStart(2, '0');
+                            const minutes = String(kzDate.getMinutes()).padStart(2, '0');
+                            timestamp = `${hours}:${minutes}`;
+                        }
+                    } catch (e) { timestamp = "—"; }
 
-                    if (reg.length <= 3 && timestamp === school) {
-                        school = '—';
-                    }
-                    
-                    const participantId = `${name}-${timestamp}`;
-                    const isNew = !shownParticipants.has(participantId);
-                    
-                    if (isNew) {
-                        shownParticipants.add(participantId);
-                        setTimeout(() => {
-                            const element = document.querySelector(`[data-participant-id="${participantId}"]`);
-                            if (element) {
-                                element.classList.remove('new');
-                            }
-                        }, 3000);
-                    }
-                    
-                    const nRole = normalizeRole(role);
-                    let roleIcon = '👤';
-                    if (nRole === 'director') roleIcon = '👔';
-                    if (nRole === 'zavuch_vr') roleIcon = '📋';
-                    if (nRole === 'parent') roleIcon = '👨‍👩‍👦';
-                    if (nRole === 'other') roleIcon = '✏️';
-
-           
-                    
                     return `
-                        <div class="participant-item ${isNew ? 'new' : ''}" data-participant-id="${participantId}">
-                            <div class="participant-avatar">${roleIcon}</div>
+                        <div class="participant-item">
                             <div class="participant-info">
                                 <div class="participant-name">${name}</div>
-                                <div class="participant-school">🏫 ${school}</div>
-                                <div class="participant-role">${role}</div>
-                                <div class="participant-time">${timestamp}</div>
+                                <div class="participant-details">${role} • ${school}</div>
                             </div>
+                            <div class="participant-time">${timestamp}</div>
                         </div>
                     `;
                 }).join('');
